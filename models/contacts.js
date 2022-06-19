@@ -1,5 +1,5 @@
 const fs = require("fs/promises");
-const filePath = require("./filePath");
+const filePath = require("../utils/filePath");
 console.log(filePath);
 const { v4 } = require("uuid");
 
