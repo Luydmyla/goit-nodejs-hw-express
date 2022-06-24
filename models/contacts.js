@@ -30,11 +30,11 @@ const joiSchema = Joi.object({
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
     .required(),
   phone: Joi.string().min(9).pattern(codeRegexp).required(),
-  favorite: Joi.boolean().required(),
+  favorite: Joi.boolean().default(false),
 });
 
 const favoriteJoiSchema = Joi.object({
-  favorite: Joi.bool().required(),
+  favorite: Joi.boolean().required(),
 });
 const Contact = model("contact", contactsSchema);
 
