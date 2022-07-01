@@ -19,5 +19,25 @@ const validation = (schema) => {
     next();
   };
 };
+const validationStatusContact = (schema) => {
+  return (req, res, next) => {
+    console.log(req.body);
+    if (Object.keys(req.body).length === 0) {
+      res.status(400).json({
+        status: "error",
+        code: 400,
+        message: "missing field favorite",
+      });
+      return;
+    }
+    const { error } = schema.validate(req.body);
+    console.log(error);
+    if (error) {
+      error.status = 400;
+      next(error);
+    }
+    next();
+  };
+};
 
-module.exports = validation;
+module.exports = { validation, validationStatusContact };
