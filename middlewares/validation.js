@@ -13,7 +13,7 @@ const validation = (schema) => {
     console.log(error);
     if (error) {
       error.status = 400;
-      // error.message = "missing required name field";
+      error.message = "missing required name field";
       next(error);
     }
     next();
