@@ -26,13 +26,6 @@ const userSchema = Schema(
   { versionKey: false, timestamps: true }
 );
 
-// userSchema.methods.setPassword = function (password) {
-//   this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-// };
-
-userSchema.methods.comparePassword = function (password) {
-  return bcrypt.compareSync(password, this.password);
-};
 // створюємо джоі-схему
 const joiRegisterSchema = Joi.object({
   password: Joi.string().min(8).required(),
@@ -45,19 +38,24 @@ const joiRegisterSchema = Joi.object({
 const joiLoginSchema = Joi.object({
   password: Joi.string().min(8).required(),
   email: Joi.string()
-    .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+    .email({
+      minDomainSegments: 2,
+      tlds: {
+        allow: ["com", "net", "org"],
+      },
+    })
     .required(),
 });
-// нова схема для патча, де перевіряється лише одне поле , яке ми обновляємо - статус, наприклад
-// const statusJoiSchema = Joi.object({
-//   status: Joi.string().valid("basic", "sale", "stock").required(),
-// });
+// нова схема для патча, де перевіряється лише одне поле , яке ми обновляємо - subscription
+const subscriptionJoiSchema = Joi.object({
+  subscription: Joi.string().valid("starter", "pro", "business").required(),
+});
 
-// щоб створити модель ми функції модел  передаємо назву колекції з якою будемо працювати в однині, та назву схеми
 const User = model("user", userSchema);
 
 module.exports = {
   User,
   joiRegisterSchema,
   joiLoginSchema,
+  subscriptionJoiSchema,
 };
