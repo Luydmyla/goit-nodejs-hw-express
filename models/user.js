@@ -2,6 +2,8 @@ const { Schema, model } = require("mongoose");
 const bcrypt = require("bcryptjs");
 const Joi = require("joi");
 
+const strongRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
 const userSchema = Schema(
   {
     password: {
@@ -37,7 +39,7 @@ userSchema.methods.comparePassword = function (password) {
 
 // створюємо джоі-схему
 const joiRegisterSchema = Joi.object({
-  password: Joi.string().min(8).required(),
+  password: Joi.string().min(8).pattern(strongRegex).required(),
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
     .required(),
@@ -45,7 +47,7 @@ const joiRegisterSchema = Joi.object({
 });
 
 const joiLoginSchema = Joi.object({
-  password: Joi.string().min(8).required(),
+  password: Joi.string().min(8).pattern(strongRegex).required(),
   email: Joi.string()
     .email({
       minDomainSegments: 2,
