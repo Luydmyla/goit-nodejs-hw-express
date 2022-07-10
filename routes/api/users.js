@@ -1,7 +1,7 @@
 // обробник маршрутів, що стосуються авторизації та реєстрації
 const express = require("express");
 
-const { auth, validation, ctrlWrapper } = require("../../middlewares");
+const { auth, validation, upload, ctrlWrapper } = require("../../middlewares");
 const { users: ctrl } = require("../../controllers");
 const {
   joiLoginSchema,
@@ -30,5 +30,13 @@ router.patch(
   auth,
   validation(subscriptionJoiSchema),
   ctrlWrapper(ctrl.updateSubscription)
+);
+// маршрут для обновлення аватара, обовязково мідлвара аус - не може отримати аватарку той хто ще не залогінився,
+//  а другу передаємо мідлвару малтер
+router.patch(
+  "/avatars",
+  auth,
+  upload.single("avatar"),
+  ctrlWrapper(ctrl.updateAvatar)
 );
 module.exports = router;
