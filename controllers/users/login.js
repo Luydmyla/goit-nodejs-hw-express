@@ -17,8 +17,12 @@ const login = async (req, res) => {
   if (!user) {
     throw new Unauthorized(`Email ${email} not found`);
   }
-  //   // якщо користувач є = то намм потрібно перевірити пароль
-  const passCompare = bcrypt.compareSync(password, user.password);
+  //  // якщо користувач є = то намм потрібно перевірити чи він верифікований
+  if (!user.verify) {
+    throw new Unauthorized(`Email ${email} is not verify`);
+  }
+  // якщо користувач є = то намм потрібно перевірити пароль
+  const passCompare = await bcrypt.compareSync(password, user.password);
   if (!passCompare) {
     throw new Unauthorized("Password wrong");
   }

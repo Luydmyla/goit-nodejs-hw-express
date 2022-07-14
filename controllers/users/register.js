@@ -1,10 +1,14 @@
 // контроллер реєстрації добавляє користувача в базу
 const { Conflict } = require("http-errors");
+const { sendMail } = require("../../helpers");
 const bcrypt = require("bcryptjs");
+// const uuid = require("uuid");
+const { nanoid } = require("nanoid");
 const gravatar = require("gravatar");
 const { User } = require("../../models");
 
 const register = async (req, res) => {
+  const verificationToken = nanoid();
   const { email, subscription, password } = req.body;
   const user = await User.findOne({ email });
   if (user) {
@@ -20,7 +24,15 @@ const register = async (req, res) => {
     subscription,
     password: hashPassword,
     avatarURL,
+    verificationToken,
   });
+
+  const mail = {
+    to: email,
+    subject: "Підтвердження емейлу",
+    html: `<a target="_blank" href="http://localhost:3000/api/users/verify/${verificationToken}">Підтвердити емейл</a>`,
+  };
+  await sendMail(mail);
 
   res.status(201).json({
     status: "sucess",
@@ -30,6 +42,7 @@ const register = async (req, res) => {
         email: result.email,
         subscription: result.subscription,
         avatarURL,
+        verificationToken,
       },
     },
   });
