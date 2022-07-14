@@ -8,6 +8,8 @@ const bcrypt = require("bcryptjs");
 const login = async (req, res) => {
   // витягуємо з тіла запиту емейл і пароль
   const { email, password } = req.body;
+  // console.log(email);
+  // console.log(password);
   // шукаємо по емейлу юзера
   const user = await User.findOne({ email });
 
