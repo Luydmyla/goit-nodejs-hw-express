@@ -1,8 +1,8 @@
 const validation = (schema) => {
   return (req, res, next) => {
-    console.log(req.body);
+    // console.log(req.body);
     const { password } = req.body;
-    console.log(password);
+    // console.log(password);
     if (Object.keys(req.body).length === 0) {
       res.status(404).json({
         status: "error",
