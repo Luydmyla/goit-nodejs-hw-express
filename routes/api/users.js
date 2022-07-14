@@ -2,6 +2,7 @@
 const express = require("express");
 
 const { auth, validation, upload, ctrlWrapper } = require("../../middlewares");
+const { validationVerify } = require("../../middlewares/validation");
 const { users: ctrl } = require("../../controllers");
 const {
   joiLoginSchema,
@@ -31,7 +32,7 @@ router.get("/verify/:verificationToken", ctrlWrapper(ctrl.verifyEmail));
 // маршрут для вартфікації
 router.post(
   "/verify",
-  validation(joiEmailSchema),
+  validationVerify(joiEmailSchema),
   ctrlWrapper(ctrl.resendVerifyEmail)
 );
 

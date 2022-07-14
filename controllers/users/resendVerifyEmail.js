@@ -4,7 +4,15 @@ const { NotFound, BadRequest } = require("http-errors");
 const resendVerifyEmail = async (req, res) => {
   //   первіряємо чиє такий користувач, з таким емейлом
   const { email } = req.body;
-  console.log(email);
+  // console.log(email);
+  // if (Object.keys(req.body).length === 0) {
+  //   res.json({
+  //     status: "error",
+  //     code: 400,
+  //     message: "missing required field email",
+  //   });
+  //   // throw BadRequest("missing required field email");
+  // }
 
   const user = await User.findOne({ email });
 

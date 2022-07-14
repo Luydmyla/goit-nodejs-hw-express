@@ -9,7 +9,7 @@ const verifyEmail = async (req, res) => {
 
   const user = await User.findOne({ verificationToken });
   if (!user) {
-    throw NotFound();
+    throw NotFound("User not found");
   }
   console.log(user);
   //   console.log(user._id);
