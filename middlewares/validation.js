@@ -1,6 +1,7 @@
 const validation = (schema) => {
   return (req, res, next) => {
     // console.log(req.body);
+
     const { password } = req.body;
     // console.log(password);
     if (Object.keys(req.body).length === 0) {
@@ -56,4 +57,18 @@ const validationStatusContact = (schema) => {
   };
 };
 
-module.exports = { validation, validationStatusContact };
+const validationVerify = (schema) => {
+  return (req, res, next) => {
+    // console.log(req.body);
+    const { error } = schema.validate(req.body);
+    // console.log(error);
+    if (error) {
+      error.status = 400;
+      error.message = "missing required field email";
+      next(error);
+    }
+    next();
+  };
+};
+
+module.exports = { validation, validationStatusContact, validationVerify };
